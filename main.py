@@ -1,3 +1,4 @@
+import argparse
 import socket
 import socketserver
 import threading
@@ -51,10 +52,19 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
 
 
+def parse_args():
+    parse = argparse.ArgumentParser(description='Async server for AGV control.')
+    parse.add_argument('--host', default="localhost", type=str, help='Server port number')
+    parse.add_argument('--port', default=6688, type=int, help='Server port number')
+    parse.add_argument('-v', '--verbose', default=True, type=bool, help='whether show the verbose log')
+    args = parse.parse_args()
+    return args
+
+
 if __name__ == "__main__":
-    # Port 0 means to select an arbitrary unused port
-    HOST, PORT = "localhost", 6688
-    server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
+    args = parse_args()
+
+    server = ThreadedTCPServer((args.host, args.port), ThreadedTCPRequestHandler)
 
     ip, port = server.server_address
     # Start a thread with the server -- that thread will then start one
