@@ -54,9 +54,12 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
 
 def parse_args():
     parse = argparse.ArgumentParser(description='Async server for AGV control.')
-    parse.add_argument('--host', default="localhost", type=str, help='Server port number')
-    parse.add_argument('--port', default=6688, type=int, help='Server port number')
-    parse.add_argument('-v', '--verbose', default=True, type=bool, help='whether show the verbose log')
+    parse.add_argument('--host', default="localhost", type=str,
+                       help='Server host ip. (Default "localhost")')
+    parse.add_argument('--port', default=6688, type=int,
+                       help='Server port number. (Default 6688)')
+    parse.add_argument('-v', '--verbose', default=True, type=bool,
+                       help='show the verbose log or not .(Default True)')
     args = parse.parse_args()
     return args
 
