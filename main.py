@@ -1,18 +1,15 @@
-import ctypes
-import socketserver
 import socket
+import socketserver
 import threading
-import sys
 
 client_addr = []
 client_socket = []
 
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
-
     ip = ""
     port = 0
-    timeOut = 10
+    timeOut = 100
 
     def setup(self):
         self.ip = self.client_address[0].strip()
@@ -41,7 +38,6 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')
                 self.request.sendall(response)
 
-
     def finish(self):
         print(self.ip + ":" + str(self.port) + " Socket Closed!")
 
@@ -69,5 +65,9 @@ if __name__ == "__main__":
     server_thread.daemon = True
     server_thread.start()
 
-    while 1:
-        pass
+    try:
+        while 1:
+            pass
+    except KeyboardInterrupt:
+        server.shutdown()
+        print("Server Closed!")
